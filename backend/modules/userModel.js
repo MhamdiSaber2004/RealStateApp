@@ -16,12 +16,16 @@ const userSchema = new mongoose.Schema(
     googleId: { type: String },
     facebookId: { type: String },
 
-    // Customer-specific fields
+    // Customer fields
     favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Property" }],
+
+    // Agent fields
+    properties: [{ type: mongoose.Schema.Types.ObjectId, ref: "Property" }],
     chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
   },
   { timestamps: true }
 );
+
 
 
 userSchema.pre("save", async function (next) {
