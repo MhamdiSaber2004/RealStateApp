@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema(
     // OAuth IDs
     googleId: { type: String },
     facebookId: { type: String },
+
+    // Customer-specific fields
+    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Property" }],
+    chats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
   },
   { timestamps: true }
 );
