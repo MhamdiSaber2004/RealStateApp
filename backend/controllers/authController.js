@@ -1,0 +1,152 @@
+const User = require("../models/userModel");
+const UserActivity = require("../models/userActivityModel");
+
+// Register a new user
+exports.registerUser = async (req, res) => {
+  try {
+    const { name, email, password, phoneNumber } = req.body;
+
+    if (!name || !email || !password || !phoneNumber) {
+      return res.status(400).json({ message: "Please provide all required fields" });
+    }
+
+    //email existe
+    userExists = await User.findOne( { $or : [ { email } , {phoneNumber} ] });
+    if (userExists) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const user = await User.create({ name, email, password, phoneNumber , role :"customer"});
+
+    if (user) {
+      // Log activity
+      await UserActivity.create({
+        user: user._id,
+        action: "register",
+        target: user._id,
+        targetModel: "User",
+      });
+
+      return res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phoneNumber : user.phoneNumber,
+        role: user.role,
+        token: user.generateToken(),
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid user data" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Login user
+exports.loginUser = async (req, res) => {
+  try {
+    const { emailOrPhoneNumber ,  password } = req.body;
+
+    user = await User.findOne({$or : [{email : emailOrPhoneNumber } , {phoneNumber : emailOrPhoneNumber}] });
+   
+    if (user && (await user.matchPassword(password))) {
+      // Log activity
+      await UserActivity.create({
+        user: user._id,
+        action: "login",
+        target: user._id,
+        targetModel: "User",
+      });
+
+      return res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phoneNumber : user.phoneNumber,
+        role: user.role,
+        token: user.generateToken(),
+      });
+    } else {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Get user profile
+exports.getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      // Log activity
+      await UserActivity.create({
+        user: user._id,
+        action: "view_profile",
+        target: user._id,
+        targetModel: "User",
+      });
+
+      return res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+        phone: user.phone,
+        bio: user.bio,
+        favorites: user.favorites,
+        chats: user.chats,
+      });
+    } else {
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Update user profile
+exports.updateUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.phone = req.body.phone || user.phone;
+      user.bio = req.body.bio || user.bio;
+
+      if (req.body.password) {
+        user.password = req.body.password; // hashed automatically
+      }
+
+      const updatedUser = await user.save();
+
+      // Log activity
+      await UserActivity.create({
+        user: updatedUser._id,
+        action: "update_profile",
+        target: updatedUser._id,
+        targetModel: "User",
+      });
+
+      return res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        token: updatedUser.generateToken(),
+      });
+    } else {
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};

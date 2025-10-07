@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const userSchema = new mongoose.Schema(
   {
@@ -8,6 +10,7 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String }, // optional for OAuth users
     avatar: { type: String },
+    phoneNumber : {type : String , mutch : [/^[2459]\d{7}$/ , "Please add a valid phone number"]},
     role: { type: String, enum: ["owner", "agent", "customer"], required: true },
     phone: { type: String },
     bio: { type: String },
