@@ -4,6 +4,7 @@ const {
     googleAuth,
     registerUser,
     loginUser,
+    verifyEamil,
     getUserProfile,
     updateUserProfile,
 } = require("../controllers/authController");
@@ -12,6 +13,7 @@ const { protect } = require("../middelwares/authMiddleware");
 // Public routes
 router.post('/google-auth',googleAuth)        //google auth (login / registre)
 router.post("/register", registerUser);      // Register new user
+router.get("/verify-email" , verifyEamil)     //vrify email
 router.post("/login", loginUser);           // Email/password login
 
 // Protected routes

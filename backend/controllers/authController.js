@@ -1,6 +1,8 @@
 const User = require("../models/userModel");
 const UserActivity = require("../models/userActivityModel");
 const { OAuth2Client } = require("google-auth-library");
+const { sendVerficationEmail } = require('../services/emailService')
+
 
 //Google auth(login / registre)
 exports.googleAuth = async (req, res) => {
@@ -28,6 +30,7 @@ exports.googleAuth = async (req, res) => {
       user = await User.create({
         name,
         email,
+        verified : true,
         googleId: sub,
         avatar: picture,
         role: "customer",
@@ -83,7 +86,12 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const user = await User.create({ name, email, password, phoneNumber , role :"customer"});
+    const user = await User.create({ name, email, password, phoneNumber});
+    
+    const token = await user.generateVerificationToken();
+    const verificationUrl = `${process.env.FRONT_URL}/api/auth/verify-email?email=${email}&token=${token}`;
+
+    await sendVerficationEmail(email, name, verificationUrl , 'registering');
 
     if (user) {
       // Log activity
@@ -144,6 +152,50 @@ exports.loginUser = async (req, res) => {
   }
 };
 
+//verify email
+exports.verifyEamil = async (req,res)=>{
+  try {
+    const {email , token} = req.query;
+
+    if(!email || !token){
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const user = await User.findOne({email});
+
+    if(user){
+      const verified = await user.verifyEmailToken(token);
+      console.log(verified)
+      if(verified){
+
+      await UserActivity.create({
+      user: user._id,
+      action: "validate acount",
+      target: user._id,
+      targetModel: "User",
+      });
+
+      return res.status(200).json(
+        {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          phoneNumber : user.phoneNumber,
+          role: user.role,
+          token: user.generateToken(),
+        }
+      )
+      }else{
+        return res.status(404).json({ message: "Invalide token" });
+      }
+    }else{
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
 // Get user profile
 exports.getUserProfile = async (req, res) => {
   try {
@@ -178,42 +230,8 @@ exports.getUserProfile = async (req, res) => {
   }
 };
 
-// Update user profile
-exports.updateUserProfile = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
 
-    if (user) {
-      user.name = req.body.name || user.name;
-      user.phone = req.body.phone || user.phone;
-      user.bio = req.body.bio || user.bio;
 
-      if (req.body.password) {
-        user.password = req.body.password; // hashed automatically
-      }
 
-      const updatedUser = await user.save();
 
-      // Log activity
-      await UserActivity.create({
-        user: updatedUser._id,
-        action: "update_profile",
-        target: updatedUser._id,
-        targetModel: "User",
-      });
 
-      return res.json({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        role: updatedUser.role,
-        token: updatedUser.generateToken(),
-      });
-    } else {
-      return res.status(404).json({ message: "User not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error" });
-  }
-};
