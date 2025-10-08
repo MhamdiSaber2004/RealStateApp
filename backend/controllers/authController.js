@@ -1,5 +1,72 @@
 const User = require("../models/userModel");
 const UserActivity = require("../models/userActivityModel");
+const { OAuth2Client } = require("google-auth-library");
+
+//Google auth(login / registre)
+exports.googleAuth = async (req, res) => {
+  try {
+    const { idToken } = req.body; // Frontend sends Google ID token
+    if (!idToken) {
+      return res.status(400).json({ message: "No Google token provided" });
+    }
+
+    // Verify token with Google
+    const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    
+    const payload = ticket.getPayload();
+    const { sub, email, name, picture } = payload;
+
+    // Check if user already exists
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Register new user
+      user = await User.create({
+        name,
+        email,
+        googleId: sub,
+        avatar: picture,
+        role: "customer",
+      });
+
+      await UserActivity.create({
+        user: user._id,
+        action: "register_google",
+        target: user._id,
+        targetModel: "User",
+      });
+    } else {
+      // Update avatar if changed
+      user.avatar = picture || user.avatar;
+      await user.save();
+
+      await UserActivity.create({
+        user: user._id,
+        action: "login_google",
+        target: user._id,
+        targetModel: "User",
+      });
+    }
+
+    // Return JWT token
+    return res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      role: user.role,
+      token: user.generateToken(),
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Google authentication failed" });
+  }
+};
 
 // Register a new user
 exports.registerUser = async (req, res) => {
