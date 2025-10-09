@@ -68,7 +68,7 @@ const creatVerificationEmailTemplate=(firstname, verificationUrl , action)=>{
       <h2>Welcome, ${firstname}!</h2>
       <p>Thank you for ${action} on RealEstateApp. To start exploring properties, please verify your email address.</p>
       <p style="text-align:center;">
-        <a href="${verificationUrl}" class="button">Verify Email</a>
+        <a href="${verificationUrl}" class="button" style="color: white;">Verify Now</a>
       </p>
       <p>If the button doesn't work, copy and paste this link into your browser:</p>
       <p style="word-break: break-all; color:#3b82f6;">${verificationUrl}</p>
@@ -98,7 +98,7 @@ const sendVerficationEmail=async(email, name, verificationUrl , action)=>{
     const mailOptions={
         from:`RealStateApp <${process.env.SMTP_USER}>`,
         to: email,
-        subject:'welcome to NexaMart - verify your email',
+        subject:'welcome to RealEStateApp',
         html: creatVerificationEmailTemplate(name, verificationUrl , action),
     };
     await transporter.sendMail(mailOptions);

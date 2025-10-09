@@ -69,7 +69,7 @@ userSchema.methods.generateVerificationToken = async function() {
 };
 
 userSchema.methods.verifyEmailToken = async function(token) {
-   if (!this.verifyToken) {
+  if (!this.verifyToken) {
     return false;
   }
 
@@ -85,8 +85,30 @@ userSchema.methods.verifyEmailToken = async function(token) {
   return true;
 };
 
+userSchema.methods.generatePasswordResrtToken = async function() {
+  const token = crypto.randomBytes(20).toString("hex");
+  const hashedToken = await bcrypt.hash(token, 10);
+  this.tokenRestPassword = hashedToken;
+  await this.save();
+  return token;
+};
 
+userSchema.methods.verifyResetPasswordToken = async function(token) {
+   if (!this.tokenRestPassword) {
+    return false;
+  }
 
+  const isValid = await bcrypt.compare(token, this.tokenRestPassword);
+  if (!isValid) {
+    return false;
+  }
+
+  this.verified = true;
+  this.tokenRestPassword = undefined; 
+  await this.save();
+
+  return true;
+};
 
 
 module.exports = mongoose.model("User", userSchema);

@@ -1,7 +1,8 @@
 const User = require("../models/userModel");
 const UserActivity = require("../models/userActivityModel");
 const { OAuth2Client } = require("google-auth-library");
-const { sendVerficationEmail } = require('../services/emailService')
+const { sendVerficationEmail } = require('../services/emailService');
+const { request } = require("express");
 
 
 //Google auth(login / registre)
@@ -192,6 +193,7 @@ exports.verifyEamil = async (req,res)=>{
       return res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Server error" });
   }
 }
@@ -271,5 +273,87 @@ exports.updateUserProfile = async (req, res) => {
 };
 
 
+//send reset password url 
+exports.sendResetPasswordEmail = async (req,res)=>{
+  try {
+    const { email } = req.body ;
+
+    const user = await User.findOne({email});
+    
+    if(user){
+      const token = await user.generatePasswordResrtToken();
+      const verificationUrl = `${process.env.FRONT_URL}/api/auth/rest-password?email=${email}&token=${token}`;
+      
+      await sendVerficationEmail(email, user.name , verificationUrl , 'reset password');
+
+      await UserActivity.create({
+        user: user._id,
+        action: "send reset password email",
+        target: user._id,
+        targetModel: "User",
+      });
+
+      return res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        token: user.generateToken(),
+      })
+
+    }else{
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
+//reset pasword
+exports.resePassword = async (req,res)=>{
+  try {
+    const { password } = req.body;
+    const { email ,  token } = req.query;
+
+    if(!password || !email || !token){
+      return res.status(400).json({message : "bad request" });
+    }
+
+    const user = await User.findOne({email});
+
+    if(user){
+      const verifyResetPassword = await user.verifyResetPasswordToken(token);
+      console.log(verifyResetPassword)
+      if(verifyResetPassword){
+        user.password = password;
+        user.save();
+
+        await UserActivity.create({
+          user: user._id,
+          action: "reset password",
+          target: user._id,
+          targetModel: "User",
+      });
+
+      return res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+      })
+        
+      }else{
+        return res.status(400).json({ message : "bad request" })
+      }
+
+    }else{
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: "Server error" });
+  }
+}
 
 

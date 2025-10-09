@@ -7,6 +7,8 @@ const {
     verifyEamil,
     getUserProfile,
     updateUserProfile,
+    sendResetPasswordEmail,
+    resePassword,
 } = require("../controllers/authController");
 const { protect } = require("../middelwares/authMiddleware");
 
@@ -15,6 +17,8 @@ router.post('/google-auth',googleAuth)        //google auth (login / registre)
 router.post("/register", registerUser);      // Register new user
 router.get("/verify-email" , verifyEamil)     //vrify email
 router.post("/login", loginUser);           // Email/password login
+router.post("/reset-password-email" , sendResetPasswordEmail) // sen the reset password url 
+router.post('/rest-password' , resePassword)     //rest password from url
 
 // Protected routes
 router.get("/profile", protect, getUserProfile);      // Get current user's profile
