@@ -19,5 +19,9 @@ app.use('/api/auth', authRouter)
 const propertyRouter = require("./routers/propertyRouter");
 app.use('/api/property' , propertyRouter);
 
+//chat router
+const chatRouter = require('./routers/chatRouter');
+app.use('/api/chats' , chatRouter);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT} !`));

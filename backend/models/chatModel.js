@@ -1,8 +1,11 @@
+// models/chatModel.js
 const mongoose = require("mongoose");
 
 const chatSchema = new mongoose.Schema(
   {
-    participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // agent + customer
+    participants: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+    ],
     messages: [
       {
         sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
@@ -10,7 +13,6 @@ const chatSchema = new mongoose.Schema(
         createdAt: { type: Date, default: Date.now },
       },
     ],
-    property: { type: mongoose.Schema.Types.ObjectId, ref: "Property" }, // optional property context
   },
   { timestamps: true }
 );
