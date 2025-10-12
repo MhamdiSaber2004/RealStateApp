@@ -15,6 +15,9 @@ app.use(express.json());
 const authRouter = require("./routers/authRouter");
 app.use('/api/auth', authRouter)
 
+//property router
+const propertyRouter = require("./routers/propertyRouter");
+app.use('/api/property' , propertyRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT} !`));

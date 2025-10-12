@@ -5,7 +5,7 @@ const { sendVerficationEmail } = require('../services/emailService');
 const { request } = require("express");
 
 
-//Google auth(login / registre)
+//Google auth(login / registre) // no test
 exports.googleAuth = async (req, res) => {
   try {
     const { idToken } = req.body; // Frontend sends Google ID token
@@ -166,7 +166,6 @@ exports.verifyEamil = async (req,res)=>{
 
     if(user){
       const verified = await user.verifyEmailToken(token);
-      console.log(verified)
       if(verified){
 
       await UserActivity.create({
@@ -324,7 +323,6 @@ exports.resePassword = async (req,res)=>{
 
     if(user){
       const verifyResetPassword = await user.verifyResetPasswordToken(token);
-      console.log(verifyResetPassword)
       if(verifyResetPassword){
         user.password = password;
         user.save();
