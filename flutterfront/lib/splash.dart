@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             const Gap(300),
             Text(
-              "REAl STATE !",
+              "REAL ESTATE",
               style: TextStyle(
                 color: AppColors.text,
                 fontWeight: FontWeight.bold,

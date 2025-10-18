@@ -14,9 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: Center(
-        child: SplashScreen(),
-      ),
+      home: SplashScreen(),
     );
   }
 }
