@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ListAgentsView extends StatelessWidget {
-  const ListAgentsView ({super.key});
+class ListAgentsPage extends StatefulWidget {
+  const ListAgentsPage ({super.key});
 
+  @override
+  State<ListAgentsPage> createState() => _ListAgentsPageState();
+}
+
+class _ListAgentsPageState extends State<ListAgentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
