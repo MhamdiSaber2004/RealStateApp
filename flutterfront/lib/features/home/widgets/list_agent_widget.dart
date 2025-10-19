@@ -14,17 +14,20 @@ class _ListAgentWidgetState extends State<ListAgentWidget> {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: CarouselSlider.builder(
-        itemCount: agents.length,
-        options: CarouselOptions(
-          height: 120,
-          enlargeCenterPage: true,
-          autoPlay: true,
-          viewportFraction: 0.9,
+      child: SizedBox(
+        height: 160,
+        child: CarouselSlider.builder(
+          itemCount: agents.length,
+          options: CarouselOptions(
+            height: 120,
+            enlargeCenterPage: true,
+            autoPlay: true,
+            viewportFraction: 0.9,
+          ),
+          itemBuilder: (context, index, realIdx) {
+            return AgentCardWidget(agent: agents[index]);
+          },
         ),
-        itemBuilder: (context, index, realIdx) {
-          return AgentCardWidget(agent: agents[index]);
-        },
       ),
     );
   }

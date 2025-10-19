@@ -25,6 +25,7 @@ class _PropertyCardWidgetState extends State<PropertyCardWidget> {
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(

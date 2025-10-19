@@ -15,19 +15,17 @@ class _ListProoertiesWidgetState extends State<ListProoertiesWidget> {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       sliver: SliverToBoxAdapter(
-        child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: properties.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: 0.6,
-          ),
-          itemBuilder: (context, index) {
-            return PropertyCardWidget(property: properties[index]);
-          },
+        child: Wrap(
+          spacing: 16,
+          runSpacing: 16,
+          children: properties
+              .map(
+                (property) => SizedBox(
+                  width: (MediaQuery.of(context).size.width - 16 * 3) / 2,
+                  child: PropertyCardWidget(property: property),
+                ),
+              )
+              .toList(),
         ),
       ),
     );
