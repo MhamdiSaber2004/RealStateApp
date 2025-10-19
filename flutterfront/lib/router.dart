@@ -21,15 +21,6 @@ class _RouterPageState extends State<RouterPage> {
   int _currentIndex = 0;
   bool isLogin = true;
 
-  final List<Widget> _pages = [
-    const HomeView(),
-    const ListAgentsPage(),
-    const ListPropertyPage(),
-    const ListChatPage(),
-    const ListFavoritPage(),
-    const ProfilePage(),
-  ];
-
   // --- Function to show Auth Modal (Login / Signup) ---
   void _showAuthModal() {
     showModalBottomSheet(
@@ -178,6 +169,21 @@ class _RouterPageState extends State<RouterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      HomeView(
+        onChangeTab: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+      ),
+      const ListPropertyPage(),
+      const ListAgentsPage(),
+      const ListChatPage(),
+      const ListFavoritPage(),
+      const ProfilePage(),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -193,7 +199,7 @@ class _RouterPageState extends State<RouterPage> {
         ],
       ),
 
-      body: _pages[_currentIndex],
+      body: pages[_currentIndex],
 
       bottomNavigationBar: SafeArea(
         child: Padding(
@@ -220,13 +226,13 @@ class _RouterPageState extends State<RouterPage> {
                       icon: Icon(Icons.home),
                       label: 'Home',
                     ),
+                        BottomNavigationBarItem(
+                      icon: Icon(Icons.location_city),
+                      label: 'Properties',
+                    ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.person_pin_circle_sharp),
                       label: 'Agents',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.location_city),
-                      label: 'Properties',
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(Icons.chat_bubble),
