@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutterfront/shared/appbar_widget.dart';
 
 class ConsolterPropertypage extends StatefulWidget {
-  const ConsolterPropertypage({super.key});
+  final String propertyName;
+  const ConsolterPropertypage({super.key , required this.propertyName});
 
   @override
   State<ConsolterPropertypage> createState() => _ConsolterPropertypageState();
@@ -10,6 +12,8 @@ class ConsolterPropertypage extends StatefulWidget {
 class _ConsolterPropertypageState extends State<ConsolterPropertypage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBarWidget(title: widget.propertyName, ) ,
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfront/core/constants/app_colors.dart';
+import 'package:flutterfront/features/propertys/views/consolter_property_view.dart';
 import 'package:flutterfront/models/PropertyModel.dart';
 import 'package:gap/gap.dart';
 
@@ -117,7 +118,16 @@ class _PropertyCardWidgetState extends State<PropertyCardWidget> {
                   Gap(10),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ConsolterPropertypage(
+                              propertyName: widget.property.title,
+                            ),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.secondary,
                         padding: const EdgeInsets.symmetric(
