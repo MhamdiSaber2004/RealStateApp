@@ -1,0 +1,68 @@
+import 'package:flutterfront/models/PropertyModel.dart';
+
+final List<Property> topProperties = [
+  Property(
+    id: "1",
+    title: "Modern Apartment aaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    description: "A beautiful modern apartment in the city center",
+    type: "sale",
+    price: 200,
+    area: 120,
+    rooms: 3,
+    status: "approved",
+    city: "New York",
+    images: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=60",
+    ],
+    agentId: "1",
+    views: 50,
+  ),
+  Property(
+    id: "2",
+    title: "Luxury Villa",
+    description: "A spacious luxury villa with a private pool",
+    type: "rent",
+    price: 500,
+    area: 300,
+    rooms: 5,
+    status: "pending",
+    city: "Los Angeles",
+    images: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=60",
+    ],
+    agentId: "2",
+    views: 20,
+  ),
+  Property(
+    id: "3",
+    title: "Cozy Cottage",
+    description: "A small cozy cottage in a quiet neighborhood",
+    type: "sale",
+    price: 120,
+    area: 80,
+    rooms: 2,
+    status: "approved",
+    city: "Miami",
+    images: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=60",
+    ],
+    agentId: "3",
+    views: 35,
+  ),
+  Property(
+    id: "4",
+    title: "Modern Loft",
+    description: "A stylish loft in the heart of downtown",
+    type: "rent",
+    price: 300,
+    area: 150,
+    rooms: 3,
+    status: "approved",
+    city: "Chicago",
+    images: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=60",
+    ],
+    agentId: "1",
+    views: 15,
+  ),
+];

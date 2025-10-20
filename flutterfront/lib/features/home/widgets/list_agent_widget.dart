@@ -19,7 +19,7 @@ class _ListAgentWidgetState extends State<ListAgentWidget> {
         child: CarouselSlider.builder(
           itemCount: agents.length,
           options: CarouselOptions(
-            height: 120,
+            height: 130,
             enlargeCenterPage: true,
             autoPlay: true,
             viewportFraction: 0.9,
