@@ -226,7 +226,7 @@ class _RouterPageState extends State<RouterPage> {
                       icon: Icon(Icons.home),
                       label: 'Home',
                     ),
-                        BottomNavigationBarItem(
+                    BottomNavigationBarItem(
                       icon: Icon(Icons.location_city),
                       label: 'Properties',
                     ),

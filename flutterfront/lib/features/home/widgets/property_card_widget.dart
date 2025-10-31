@@ -125,6 +125,7 @@ class _PropertyCardWidgetState extends State<PropertyCardWidget> {
                           MaterialPageRoute(
                             builder: (context) => ConsolterPropertypage(
                               propertyName: widget.property.title,
+                              propertyId: widget.property.id,
                             ),
                           ),
                         );

@@ -125,6 +125,7 @@ class _ProperyCardWidgetState extends State<ProperyCardWidget> {
                           MaterialPageRoute(
                             builder: (context) => ConsolterPropertypage(
                               propertyName: widget.topProperty.title,
+                              propertyId: widget.topProperty.agentId,
                             ),
                           ),
                         );
