@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutterfront/features/agents/widgets/list_agent_widget.dart';
 import 'package:flutterfront/features/agents/widgets/top_agents_widget.dart';
+import 'package:flutterfront/features/agents/widgets/top_list_agent_widget.dart';
+import 'package:flutterfront/features/agents/widgets/search_widget.dart';
 import 'package:flutterfront/features/home/widgets/list_agent_widget.dart';
 
 class ListAgentsPage extends StatefulWidget {
@@ -18,7 +21,9 @@ class _ListAgentsPageState extends State<ListAgentsPage> {
         body: CustomScrollView(
           slivers: [
             TopAgentsWidget(),
-            ListAgentWidget()
+            TopListAgentWidget(),
+            SearchWidget(),
+            ListAgentsWidget()
           ],
         ),
       )

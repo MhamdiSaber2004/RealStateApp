@@ -3,16 +3,16 @@ import 'package:flutterfront/features/agents/views/consolt_agent_view.dart';
 import 'package:flutterfront/models/AgentsModel.dart';
 import 'package:gap/gap.dart';
 
-class AgentCardWidget extends StatefulWidget {
+class TopAgentCardWidget extends StatefulWidget {
   final Agent agent;
 
-  const AgentCardWidget({super.key, required this.agent});
+  const TopAgentCardWidget({super.key, required this.agent});
 
   @override
-  State<AgentCardWidget> createState() => _AgentCardWidgetState();
+  State<TopAgentCardWidget> createState() => _TopAgentCardWidgetState();
 }
 
-class _AgentCardWidgetState extends State<AgentCardWidget> {
+class _TopAgentCardWidgetState extends State<TopAgentCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +35,7 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  ConsoltAgentView(agentName: widget.agent.name),
+                  ConsoltAgentView(agent: widget.agent),
             ),
           );
         },

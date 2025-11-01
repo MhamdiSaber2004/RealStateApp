@@ -35,7 +35,7 @@ class _AgentCardWidgetState extends State<AgentCardWidget> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  ConsoltAgentView(agentName: widget.agent.name),
+                  ConsoltAgentView(agent: widget.agent),
             ),
           );
         },

@@ -1,34 +1,32 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterfront/features/agents/data/top_agent_data.dart';
-import 'package:flutterfront/features/agents/widgets/agent_card_widget.dart';
+import 'package:flutterfront/features/agents/data/agents_data.dart';
+import 'package:flutterfront/features/agents/widgets/agent_cart_widget.dart';
 
-class ListAgentWidget extends StatefulWidget {
-  const ListAgentWidget({super.key});
+class ListAgentsWidget extends StatefulWidget {
+  const ListAgentsWidget({super.key});
 
   @override
-  State<ListAgentWidget> createState() => _ListAgentWidgetState();
+  State<ListAgentsWidget> createState() => _ListAgentsWidgetState();
 }
 
-class _ListAgentWidgetState extends State<ListAgentWidget> {
+class _ListAgentsWidgetState extends State<ListAgentsWidget> {
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: SizedBox(
-        height: 160,
-        child: CarouselSlider.builder(
-          itemCount: topAgents.length,
-          options: CarouselOptions(
-            height: 130,
-            enlargeCenterPage: true,
-            autoPlay: true,
-            viewportFraction: 0.9,
+    return (
+      SliverPadding(padding: const EdgeInsets.symmetric(horizontal: 16 , vertical: 8),
+        sliver: SliverToBoxAdapter(
+          child: Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: topAgents.map((agent) {
+              return SizedBox(
+                width: (MediaQuery.of(context).size.width - 48) / 2,
+                child: AgentCartWidget(agent: agent),
+              );
+            }).toList(),
           ),
-          itemBuilder: (context, index, realIdx) {
-            return AgentCardWidget(agent: topAgents[index]);
-          },
         ),
-      ),
+      )
     );
   }
 }
