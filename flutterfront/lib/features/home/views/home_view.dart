@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterfront/features/home/widgets/top_agents_widget.dart';
 import 'package:flutterfront/features/home/widgets/list_agent_widget.dart';
 import 'package:flutterfront/features/home/widgets/list_prooerties_widget.dart';
 import 'package:flutterfront/features/home/widgets/search_widget.dart';
@@ -25,7 +26,7 @@ class _HomeViewState extends State<HomeView> {
 
           ListProoertiesWidget(),
 
-          TopPropetyWidget(onChangeTab: widget.onChangeTab),
+TopAgentsWidget(onChangeTab: widget.onChangeTab),
 
           ListAgentWidget(),
         ],
