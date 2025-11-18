@@ -20,12 +20,16 @@ class _MyMessageWidgetState extends State<MyMessageWidget> {
             color: Colors.blue,
             borderRadius: BorderRadius.circular(8),
           ),
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
           child: Text(
             widget.messages,
             style: TextStyle(
               color: Colors.white, 
               fontSize: 16,
             ),
+            softWrap: true,
           ),
         ),
       ],

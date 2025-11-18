@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutterfront/features/chats/data/single_chat_data.dart';
 import 'package:flutterfront/features/chats/widgets/my_message_widget.dart';
 import 'package:flutterfront/features/chats/widgets/other_massege_wigdet.dart';
-import 'package:gap/gap.dart';
 
 class ListMessagesWidget extends StatefulWidget {
   const ListMessagesWidget({super.key});
@@ -11,25 +11,35 @@ class ListMessagesWidget extends StatefulWidget {
 }
 
 class _ListMessagesWidgetState extends State<ListMessagesWidget> {
+
+  final String currentUserId = "user123"; // agent id
+
   @override
   Widget build(BuildContext context) {
+    final chat = dummyChats.first; // take first chat for example
+    final messages = chat.messages;
+
     return SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsetsGeometry.all(15),
-              child: Column(
-                children:  [
-                  MyMessageWidget(messages: 'hi'),
-                  Gap(10),
-                  MyMessageWidget(messages: "where is your location"),
-                  Gap(10),
-                  OtherMassegeWigdet(messages: 'hello sir'),
-                  Gap(10),
-                  OtherMassegeWigdet(messages: "we'are in street hbib bourgouba appartment 10 00000000000000000000000000000000")
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: messages.map((msg) {
+            final isMe = msg.sender == currentUserId;
 
-
-                ],
-              ),
-            ),
-          );
+            if (isMe) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: MyMessageWidget(messages: msg.text),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: OtherMassegeWigdet(messages: msg.text),
+              );
+            }
+          }).toList(),
+        ),
+      ),
+    );
   }
 }
