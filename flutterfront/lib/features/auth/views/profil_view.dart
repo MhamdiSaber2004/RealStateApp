@@ -11,6 +11,15 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: const AppBarWidget(title: "Settings"));
+    return Scaffold(
+      appBar: const AppBarWidget(title: "Settings"),
+      body : Center(
+        child: Column(
+          children: [
+            
+          ],
+        ),
+      ),
+      );
   }
 }
